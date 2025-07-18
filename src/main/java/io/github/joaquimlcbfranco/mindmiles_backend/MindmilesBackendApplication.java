@@ -12,4 +12,5 @@ public class MindmilesBackendApplication {
 		SpringApplication.run(MindmilesBackendApplication.class, args);
 	}
 
+
 }
