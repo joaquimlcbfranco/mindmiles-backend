@@ -3,22 +3,21 @@ package io.github.joaquimlcbfranco.mindmiles_backend.service;
 import io.github.joaquimlcbfranco.mindmiles_backend.entity.User;
 import io.github.joaquimlcbfranco.mindmiles_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public interface UserService {
 
-    private UserRepository userRepository;
+    List<User> getUsers();
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    User getUserByUsername(String username);
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+    List<User> getUsersBySearch(String searchWords);
+
+    User addUser(User newUser);
+
 }
