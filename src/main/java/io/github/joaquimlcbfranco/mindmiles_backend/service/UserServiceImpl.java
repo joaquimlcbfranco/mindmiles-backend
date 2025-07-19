@@ -60,16 +60,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User addUser(User newUser) {
-        if (newUser.getFirstName() == null || !newUser.getFirstName().matches("^[A-Za-z]+$")) {
-            throw new InvalidParametersException("First name must be alphabetic");
-        }
+        this.validateInputs(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername());
 
-        if (newUser.getLastName() == null || !newUser.getLastName().matches("^[A-Za-z]+$")) {
-            throw new InvalidParametersException("Last name must be alphabetic");
-        }
-
-        if (newUser.getUsername() == null || !newUser.getUsername().matches("^[A-Za-z0-9_\\.]*$") || newUser.getUsername().length() < 8) {
-            throw new InvalidParametersException("Username must have more than 8 alphanumeric characters");
+        if (this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
+            throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
         }
 
         if (this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
@@ -84,12 +78,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(User newUser, long id) {
+        this.validateInputs(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername());
+
         Optional<User> foundUser = this.userRepository.findById(id);
 
         if (foundUser.isPresent()) {
             User toUpdate = foundUser.get();
             toUpdate.setFirstName(newUser.getFirstName());
             toUpdate.setLastName(newUser.getLastName());
+            if (!newUser.getUsername().equals(toUpdate.getUsername()) && this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
+                    throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
+            }
             toUpdate.setUsername(newUser.getUsername());
             toUpdate.setEmail(newUser.getEmail());
             toUpdate.setDob(newUser.getDob());
@@ -115,5 +114,20 @@ public class UserServiceImpl implements UserService {
         throw new UserNotFoundException("User with id " + id + "not found");
     }
 
+    public boolean validateInputs(String firstName, String lastName, String username) {
+        if (firstName == null || !firstName.matches("^[A-Za-z]+$")) {
+            throw new InvalidParametersException("First name must be alphabetic");
+        }
+
+        if (lastName == null || !lastName.matches("^[A-Za-z]+$")) {
+            throw new InvalidParametersException("Last name must be alphabetic");
+        }
+
+        if (username == null || !username.matches("^[A-Za-z0-9_\\.]*$") || username.length() < 4) {
+            throw new InvalidParametersException("Username must have more than 4 alphanumeric characters");
+        }
+
+        return true;
+    }
 
 }
