@@ -46,4 +46,7 @@ public class UserController {
         return this.userService.deleteUser(id);
     }
 
+    // Get, post, put and delete mapping for user specific activities
+
+
 }
