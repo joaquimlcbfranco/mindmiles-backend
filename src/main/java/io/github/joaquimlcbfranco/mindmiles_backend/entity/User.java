@@ -33,7 +33,8 @@ public class User {
     @Column(name = "gender")
     private String gender;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private List<Activity> activities;
 
     public User() {
@@ -104,8 +105,6 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-
 
     public List<Activity> getActivities() {
         return activities;
