@@ -33,6 +33,10 @@ public class Activity {
     @Column(name = "seconds")
     private long seconds;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name="user_id")
+    private User user;
+
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "activity_category",
@@ -108,6 +112,14 @@ public class Activity {
 
     public void setSeconds(long seconds) {
         this.seconds = seconds;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Category> getCategories() {
