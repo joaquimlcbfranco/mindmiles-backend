@@ -2,7 +2,7 @@ package io.github.joaquimlcbfranco.mindmiles_backend.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Activity {
     private String description;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "hours")
     private long hours;
@@ -33,9 +33,9 @@ public class Activity {
     @Column(name = "seconds")
     private long seconds;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name="user_id")
-    private User user;
+//    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinColumn(name="user_id")
+//    private User user;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
@@ -49,7 +49,7 @@ public class Activity {
 
     }
 
-    public Activity(String title, String description, LocalDateTime date, long hours, long minutes, long seconds) {
+    public Activity(String title, String description, LocalDate date, long hours, long minutes, long seconds) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -82,11 +82,11 @@ public class Activity {
         this.description = description;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -114,13 +114,13 @@ public class Activity {
         this.seconds = seconds;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public List<Category> getCategories() {
         return categories;
