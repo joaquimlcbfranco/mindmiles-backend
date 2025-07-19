@@ -62,11 +62,7 @@ public class UserServiceImpl implements UserService {
     public User addUser(User newUser) {
         this.validateInputs(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername());
 
-        if (this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
-            throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
-        }
-
-        if (this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
+        if (this.userRepository.findByUsername(newUser.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
         }
 
@@ -86,7 +82,7 @@ public class UserServiceImpl implements UserService {
             User toUpdate = foundUser.get();
             toUpdate.setFirstName(newUser.getFirstName());
             toUpdate.setLastName(newUser.getLastName());
-            if (!newUser.getUsername().equals(toUpdate.getUsername()) && this.userRepository.findUserByUsername(newUser.getUsername()) != null) {
+            if (!newUser.getUsername().equals(toUpdate.getUsername()) && this.userRepository.findByUsername(newUser.getUsername()).isPresent()) {
                     throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
             }
             toUpdate.setUsername(newUser.getUsername());
