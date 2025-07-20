@@ -10,5 +10,11 @@ public interface CategoryService {
 
     Category getCategoryById(long id);
 
+    List<Category> getCategoryByUserId(long id);
+
     Category addCategory(long id, Category category);
+
+    Category updateCategory(long id, Category newCategory);
+
+    String deleteCategory(long id);
 }
