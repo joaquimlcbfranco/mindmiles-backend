@@ -126,6 +126,22 @@ public class User {
         this.activities.add(newActivity);
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category) {
+        if (this.categories == null) {
+            this.categories = new ArrayList<>();
+        }
+
+        this.categories.add(category);
+    }
+
     @Override
     public String toString() {
         return "User{" +
