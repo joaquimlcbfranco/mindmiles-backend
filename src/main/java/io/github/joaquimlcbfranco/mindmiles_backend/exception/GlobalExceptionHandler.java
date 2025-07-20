@@ -26,7 +26,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(InvalidParametersException error) {
+    public ResponseEntity<ErrorResponse> handleException(ActivityNotFoundException error) {
+        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.BAD_REQUEST, error.getMessage()).build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(CategoryNotFoundException error) {
         ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.BAD_REQUEST, error.getMessage()).build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
