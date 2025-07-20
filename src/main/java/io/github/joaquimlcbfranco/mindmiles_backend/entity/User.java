@@ -37,6 +37,10 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Activity> activities;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Category> categories;
+
     public User() {
 
     }
