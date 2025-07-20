@@ -28,10 +28,27 @@ public class CategoryController {
         return this.categoryService.getCategoryById(id);
     }
 
+    @GetMapping("/users/{id}/categories")
+    public List<Category> getCategoryByUserId(@PathVariable long id) {
+        return this.categoryService.getCategoryByUserId(id);
+    }
+
     @PostMapping("/users/{id}/categories")
     public Category addCategory(@PathVariable long id , @RequestBody Category newCategory) {
         return this.categoryService.addCategory(id, newCategory);
     }
+
+    @PutMapping("/categories/{id}")
+    public Category updateCategory(@PathVariable long id, @RequestBody Category newCategory) {
+        return this.categoryService.updateCategory(id, newCategory);
+    }
+
+    @DeleteMapping("/categories/{id}")
+    public String deleteCategory(@PathVariable long id) {
+        return this.categoryService.deleteCategory(id);
+    }
+
+
 
 
 }
