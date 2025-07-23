@@ -33,6 +33,9 @@ public class User {
     @Column(name = "gender")
     private String gender;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Activity> activities;
@@ -108,6 +111,14 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Activity> getActivities() {
