@@ -7,6 +7,7 @@ import io.github.joaquimlcbfranco.mindmiles_backend.exception.UserNotFoundExcept
 import io.github.joaquimlcbfranco.mindmiles_backend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -62,9 +65,15 @@ public class UserServiceImpl implements UserService {
     public User addUser(User newUser) {
         this.validateInputs(newUser.getFirstName(), newUser.getLastName(), newUser.getUsername());
 
+        if (newUser.getPassword() == null || !newUser.getPassword().matches("^[A-Za-z0-9_\\.]*$") || newUser.getPassword().length() < 8) {
+            throw new InvalidParametersException("Password must have more than 8 alphanumeric characters");
+        }
+
         if (this.userRepository.findByUsername(newUser.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException("Username is in use - " + newUser.getUsername());
         }
+
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
         User addedUser = this.userRepository.save(newUser);
 
