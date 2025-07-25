@@ -1,6 +1,7 @@
 package io.github.joaquimlcbfranco.mindmiles_backend.service;
 
 import io.github.joaquimlcbfranco.mindmiles_backend.entity.User;
+import io.github.joaquimlcbfranco.mindmiles_backend.exception.BadCredentialsException;
 import io.github.joaquimlcbfranco.mindmiles_backend.exception.InvalidParametersException;
 import io.github.joaquimlcbfranco.mindmiles_backend.exception.UserAlreadyExistsException;
 import io.github.joaquimlcbfranco.mindmiles_backend.exception.UserNotFoundException;
@@ -117,6 +118,17 @@ public class UserServiceImpl implements UserService {
         }
 
         throw new UserNotFoundException("User with id " + id + "not found");
+    }
+
+    public boolean autheticate(String username, String password) {
+        User user = this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
+
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            throw new BadCredentialsException("The provided password is incorrect");
+        }
+
+        return true;
     }
 
     public boolean validateInputs(String firstName, String lastName, String username) {

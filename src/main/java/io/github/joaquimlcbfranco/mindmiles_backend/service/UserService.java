@@ -20,4 +20,6 @@ public interface UserService {
     User updateUser(User newUser, long id);
 
     String deleteUser(long id);
+
+    boolean autheticate(String username, String password);
 }
