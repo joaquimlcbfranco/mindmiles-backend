@@ -27,16 +27,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(ActivityNotFoundException error) {
-        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.BAD_REQUEST, error.getMessage()).build();
+        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.NOT_FOUND, error.getMessage()).build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(CategoryNotFoundException error) {
-        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.BAD_REQUEST, error.getMessage()).build();
+        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.NOT_FOUND, error.getMessage()).build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleException(BadCredentialsException error) {
+        ErrorResponse errorResponse = ErrorResponse.builder(error, HttpStatus.UNAUTHORIZED, error.getMessage()).build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler
